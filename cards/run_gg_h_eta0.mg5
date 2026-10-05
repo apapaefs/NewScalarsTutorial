@@ -1,0 +1,44 @@
+# A small, illustrative parton-level run; see docs/physics.md.
+# Run only after cards/generate_gg_h_eta0.mg5, from the repository root.
+set auto_update 0 --no_save
+set automatic_html_opening False --no_save
+set run_mode 0 --no_save
+launch Work/gg_h_eta0 -n pilot
+shower=OFF
+madspin=OFF
+reweight=OFF
+done
+set nevents 100
+set iseed 12345
+set lpp1 1
+set lpp2 1
+set ebeam1 6500
+set ebeam2 6500
+set pdlabel nn23lo1
+set fixed_ren_scale False
+set fixed_fac_scale False
+set dynamical_scale_choice 3
+set scalefact 1.0
+set ickkw 0
+set ptheavy 0.0
+set use_syst False
+set systematics_program none
+set event_norm sum
+set param_card mass 25 125.0
+set param_card mass 99925 400.0
+set param_card bsm 13 0.9797958971132712
+set param_card bsm 14 0.2
+set param_card bsm 15 0.0
+set param_card bsm 16 100.0
+set param_card bsm 17 100.0
+set param_card bsm 18 0.0
+set param_card bsm 19 0.0
+set param_card bsm 20 0.0
+set param_card bsm 21 0.0
+set param_card bsm 22 0.0
+set param_card bsm 23 0.0
+set param_card decay 6 0.0
+set param_card decay 25 0.0
+set param_card decay 99925 0.0
+done
+quit

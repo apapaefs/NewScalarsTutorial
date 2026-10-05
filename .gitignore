@@ -1,0 +1,21 @@
+# Installations, generated processes, and analysis products
+/Work/
+/results/
+/.venv/
+/.venv-*/
+__pycache__/
+*.py[cod]
+*.pkl
+.DS_Store
+*.log
+*.lhe
+*.lhe.gz
+!tests/fixtures/*.lhe
+!examples/gg_h_eta0_pilot.lhe.gz
+MG5_debug
+/additional_command
+/py.py
+/parser.out
+*.root
+*.hepmc
+*.hepmc.gz
