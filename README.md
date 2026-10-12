@@ -345,6 +345,24 @@ the separate files under `tests/` are for checking the software.
 
 ## Running the Python analysis
 
+- The analyser is also tested with Python 3.9. If your course computer uses
+  that version, you can use it for this section; the MadGraph setup above was
+  tested separately with Python 3.12. Activate your course or tutorial Python
+  environment, then check and install the required packages. **Terminal, from
+  `NewScalarsTutorial`:**
+
+```bash
+python --version
+python -m pip install -r requirements.txt
+python -m pip check
+```
+
+Using `python -m pip` installs packages for the same interpreter that will run
+the analysis. Keep NumPy and Matplotlib consistent with `requirements.txt`:
+some older Matplotlib packages cannot load alongside NumPy 2. The required
+Matplotlib version is now at least 3.9.4. If an import or plotting error occurs,
+see the [troubleshooting notes](docs/validation.md#common-problems).
+
 - Our starting analysis is in `lheanalyzer/lhe_analyzer.py`, adapted from
   [lheanalyzer](https://gitlab.com/apapaefs/lheanalyzer). The code reads the
   event file, calculates quantities for each event and draws histograms.

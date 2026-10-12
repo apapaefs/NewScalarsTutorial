@@ -86,6 +86,32 @@ with Python 3.9.6 (NumPy 2.0.2, Matplotlib 3.9.4) and Python 3.12.14
 (NumPy 2.5.3, Matplotlib 3.11.2). These checks cover the LHE analyser;
 the full MadGraph generation test above used Python 3.12.
 
+The subsequent compatibility audit checked the remaining syntax, standard-library
+calls, NumPy operations and Matplotlib plotting calls. It found no additional
+Python 3.9 language/API incompatibility. It did reproduce a dependency problem:
+Matplotlib 3.7.0 with NumPy 2.0.2, a combination allowed by the old requirements,
+failed on import with `_ARRAY_API not found` and `numpy.core.multiarray failed
+to import`. The requirements now select Matplotlib 3.9.4 or newer, tested with
+both NumPy 1.x and 2.x. This is an example of the
+[binary compatibility problem described by NumPy](https://numpy.org/doc/stable/user/troubleshooting-importerror.html#downstream-importerror-attributeerror-or-c-api-abi-incompatibility).
+
+The expanded test suite also exercises:
+
+- the real 100-event sample as plain and gzipped LHE, including paths with spaces;
+- script and module invocation, help, invalid arguments and readable error messages;
+- PDF/PNG output, CSV/JSON contents and normalisation with and without a cut;
+- refusal to overwrite existing plots, followed by an explicit `--overwrite` run;
+- the exact three README snippets for adding the seventh, pair-rapidity plot.
+
+All thirteen tests passed locally on macOS/Apple Silicon with Python 3.9.6
+using both NumPy 1.24.0 and 2.0.2 with Matplotlib 3.9.4, and with Python 3.12.14
+using NumPy 2.5.3 and Matplotlib 3.11.2.
+
+The GitHub workflow `.github/workflows/python-compatibility.yml` runs these
+checks on pushes and pull requests. It tests Python 3.9 with minimum and latest
+compatible dependencies, plus Python 3.12 with latest compatible dependencies.
+The minimum combination is NumPy 1.24.0, Matplotlib 3.9.4 and six 1.16.0.
+
 ## Reproduce the analysis checks
 
 ```bash
@@ -101,6 +127,21 @@ compare conserved quantities and statistically compatible results, not a
 byte-for-byte event-file match.
 
 ## Common problems
+
+**Plotting fails with `_ARRAY_API not found` or `numpy.core.multiarray failed
+to import`.** An old Matplotlib installation may have been built for NumPy 1.x
+and cannot load with NumPy 2. Activate the Python environment used for this
+tutorial and install the updated requirements:
+
+```bash
+python -m pip install --upgrade -r requirements.txt
+python -m pip check
+```
+
+Then rerun the analysis. `python -m pip` uses the same interpreter as the
+analysis command. The requirements now exclude the incompatible Matplotlib
+3.7 release tested above. A successful `pip check` only checks package metadata;
+running the example analysis also checks that the plotting libraries can load.
 
 **`TypeError: zip() takes no keyword arguments`.** An earlier version of the
 analyser used `zip(events, weights, strict=True)`. The `strict` option was

@@ -1,0 +1,47 @@
+name: Python compatibility
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analysis:
+    name: Python ${{ matrix.python }} / ${{ matrix.dependencies }} dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.9"
+            dependencies: minimum
+          - python: "3.9"
+            dependencies: latest
+          - python: "3.12"
+            dependencies: latest
+    env:
+      MPLBACKEND: Agg
+      MPLCONFIGDIR: ${{ runner.temp }}/matplotlib
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install minimum supported dependencies
+        if: matrix.dependencies == 'minimum'
+        run: python -m pip install -r requirements.txt "numpy==1.24.0" "matplotlib==3.9.4" "six==1.16.0"
+      - name: Install latest dependencies compatible with this Python
+        if: matrix.dependencies == 'latest'
+        run: python -m pip install -r requirements.txt
+      - name: Check dependencies and Python syntax
+        run: |
+          python -m pip check
+          python -m compileall -q lheanalyzer scripts tests
+      - name: Test analysis, command-line outputs and README exercise
+        run: python -m unittest discover -s tests -v
