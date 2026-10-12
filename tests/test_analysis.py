@@ -51,6 +51,13 @@ class AnalysisTests(unittest.TestCase):
         h = self.sample.events[0][2]
         self.assertAlmostEqual(invariant_mass(h.energy, h.px, h.py, h.pz), 125)
 
+    def test_mismatched_event_weights_are_rejected(self):
+        # Missing or extra weights must not silently drop events or alter rates.
+        for weights in (self.sample.weights[:-1], self.sample.weights + [1.0]):
+            with self.subTest(number_of_weights=len(weights)):
+                with self.assertRaisesRegex(ValueError, "exactly one weight"):
+                    analyze(self.sample.events, weights)
+
     def test_actual_madgraph_3516_pilot(self):
         pilot = read_lhe(FIXTURE.parents[2] / "examples/gg_h_eta0_pilot.lhe.gz")
         self.assertEqual(len(pilot.events), 100)

@@ -37,6 +37,12 @@ def rapidity(particle):
 def analyze(events, weights, min_pt_h=0.0):
     """Loop over events and return the quantities we want to plot."""
 
+    # Each event needs one weight. Check this before zip, which would otherwise
+    # silently stop at the end of the shorter list.
+    if len(events) != len(weights):
+        raise ValueError("Each event must have exactly one weight; "
+                         "the event and weight lists have different lengths.")
+
     # STEP 1: Make an empty list for each quantity. Each list will receive one
     # number per selected event. Add the list for your own quantity here.
     output = {}
@@ -52,7 +58,7 @@ def analyze(events, weights, min_pt_h=0.0):
               "max_four_momentum_residual_GeV": 0.0}
 
     # zip gives us an event and its weight together on each pass through the loop.
-    for particles, weight in zip(events, weights, strict=True):
+    for particles, weight in zip(events, weights):
         # Select particles leaving the hard collision: LHE status 1.
         outgoing = [p for p in particles if p.status == 1]
         higgs = [p for p in outgoing if p.pdg == 25]

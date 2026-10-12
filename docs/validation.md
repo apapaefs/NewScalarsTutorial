@@ -58,9 +58,9 @@ on the same machine and date:
   ran in that release, again giving 0 Born, 20 loop and 6 R2 diagrams. This
   separate check stopped at diagram generation; the compiler and complete
   event-generation checks above used the Git distribution.
-- All nine current regression tests passed. The two additional checks run the
-  actual plotting command with a selection in both normalisation modes, and
-  check the explanatory error for a missing per-event list entry.
+- All nine regression tests available at that stage passed. The two additional
+  checks run the actual plotting command with a selection in both normalisation
+  modes, and check the explanatory error for a missing per-event list entry.
 - The six revised plots were compared numerically with the original analyser's
   output for the same 100-event sample. Bin edges, densities and statistical
   errors agreed to numerical precision.
@@ -77,6 +77,15 @@ distributed script. The CSV now labels its weighted bin contents `bin_integral`
 and `bin_sumw2`: these use the normalised plotting weights, in pb and pb² for
 cross-section plots, or inclusive fractions and their squares for shape plots.
 
+## Python compatibility check
+
+On 12 October 2026, the `zip(..., strict=True)` call was replaced with an
+explicit event/weight length check and plain `zip`. All ten regression tests,
+including the plotting commands and the new mismatched-length check, passed
+with Python 3.9.6 (NumPy 2.0.2, Matplotlib 3.9.4) and Python 3.12.14
+(NumPy 2.5.3, Matplotlib 3.11.2). These checks cover the LHE analyser;
+the full MadGraph generation test above used Python 3.12.
+
 ## Reproduce the analysis checks
 
 ```bash
@@ -92,6 +101,26 @@ compare conserved quantities and statistically compatible results, not a
 byte-for-byte event-file match.
 
 ## Common problems
+
+**`TypeError: zip() takes no keyword arguments`.** An earlier version of the
+analyser used `zip(events, weights, strict=True)`. The `strict` option was
+[added in Python 3.10](https://docs.python.org/3.10/library/functions.html#zip),
+so that line fails on Python 3.9 and earlier. The current analyser checks the
+list lengths separately and uses `zip(events, weights)`.
+
+From the tutorial repository, run `git pull --ff-only` to obtain the fix. If
+you have already edited the analysis for your project, keep those edits and
+make this small change yourself: remove `, strict=True` from the `zip` call,
+and add the following at the start of `analyze()`, with four spaces of indentation:
+
+```python
+    if len(events) != len(weights):
+        raise ValueError("Each event must have exactly one weight.")
+```
+
+Check the interpreter you are using with `python --version`. The complete
+MadGraph setup in the README was tested with Python 3.12; activate the tutorial
+environment with `source .venv/bin/activate` before running its commands.
 
 **The model cannot be imported.** Check that the directory is named
 `models/loop_sm_scalar` inside the actual 3.5.16 installation being executed.
