@@ -25,7 +25,6 @@ jobs:
             dependencies: latest
     env:
       MPLBACKEND: Agg
-      MPLCONFIGDIR: ${{ runner.temp }}/matplotlib
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -44,4 +43,6 @@ jobs:
           python -m pip check
           python -m compileall -q lheanalyzer scripts tests
       - name: Test analysis, command-line outputs and README exercise
+        env:
+          MPLCONFIGDIR: ${{ runner.temp }}/matplotlib
         run: python -m unittest discover -s tests -v
