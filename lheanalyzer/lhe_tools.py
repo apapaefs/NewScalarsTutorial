@@ -75,7 +75,7 @@ def read_lhe(path):
     """Read standard MG5 plain/gzipped LHE with exactly one subprocess.
 
     Count NUP particle records explicitly; metadata such as <rwgt> cannot be
-    mistaken for momenta. Nominal weights are used, variations are retained.
+    mistaken for momenta. Nominal weights are used; variation weights are stored.
     Like upstream, the small classroom sample is held in memory.
     """
     path = Path(path)
@@ -185,7 +185,7 @@ def check_momenta(particles, h, eta, checks):
 
 
 def save_report(sample, selected_weights, checks, plots, destination, normalization,
-                input_path, min_pt_h):
+                input_path, min_pt_h=None, *, selection=None, cutflow=None):
     inclusive_sumw = math.fsum(sample.weights)
     selected_sumw = math.fsum(selected_weights)
     summary = {
@@ -202,11 +202,30 @@ def save_report(sample, selected_weights, checks, plots, destination, normalizat
         "idwtup": sample.weight_strategy, "process_id": sample.process_id,
         "variation_weights_used": False,
         "events_with_variation_weights": sum(bool(w) for w in sample.multiweights),
-        "min_pt_h_GeV": min_pt_h, "checks": checks, "histograms": {},
+        "checks": checks, "histograms": {},
         "error_note": "Bin errors are sqrt(sum(w^2)) with fixed inclusive normalisation; "
                       "they exclude integration, scale/PDF and normalisation correlations.",
     }
+    if min_pt_h is not None:
+        summary["min_pt_h_GeV"] = min_pt_h
+    if selection is not None:
+        summary["selection"] = selection
+    if cutflow is not None:
+        summary["cutflow"] = []
+        for stage, weights in cutflow.items():
+            sumw = math.fsum(weights)
+            summary["cutflow"].append({
+                "stage": stage, "events": len(weights), "sumw": sumw,
+                "sumw2": math.fsum(w * w for w in weights),
+                "weighted_efficiency": sumw / inclusive_sumw,
+                "cross_section_pb": sample.cross_section_pb * sumw / inclusive_sumw,
+            })
     destination.mkdir(parents=True, exist_ok=True)
+    if cutflow is not None:
+        with (destination / "cutflow.csv").open("w", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=list(summary["cutflow"][0]))
+            writer.writeheader()
+            writer.writerows(summary["cutflow"])
     with (destination / "histograms.csv").open("w", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerow(["observable", "left", "right", "bin_integral", "bin_sumw2",

@@ -1,0 +1,7 @@
+# Standalone MadSpin; paths are relative to the tutorial root.
+set spinmode none
+set seed 34567
+set curr_dir Work/gg_h_eta0_2e2mu
+import Work/gg_h_eta0_2e2mu/Events/four_lepton_pilot/unweighted_events.lhe.gz
+decay eta0 > z z, z > e+ e-, z > mu+ mu-
+launch

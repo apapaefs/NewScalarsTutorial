@@ -613,6 +613,17 @@ couplings, PDF, scales, seed and event count. Explain how you calculated your
 new quantity, how you checked the result, and what the plot tells you about
 the collision. The [project questions](docs/tutorial.md) provide further prompts.
 
+## Next exercise: reconstructing the new scalar
+
+Continue with [the four-lepton exercise](docs/four_lepton.md). We leave the
+associated Higgs stable and decay `eta0 -> Z Z -> e+ e- mu+ mu-`. A separate
+starter analyser plots the electron-pair mass. You will add the muon-pair and
+four-lepton masses, then compare the plots and selection efficiency after a
+lepton transverse-momentum cut. The guide explains each code addition, shows
+every run command and gives a checkpoint after each step. A small decayed sample
+is provided, so you only need the Python setup to begin; running MadGraph is
+an [optional extension](docs/four_lepton_generation.md).
+
 ## Reference material
 
 The manual steps above are the student exercise. The files in `cards/` and

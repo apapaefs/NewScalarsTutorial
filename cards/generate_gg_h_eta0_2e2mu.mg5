@@ -1,0 +1,9 @@
+# Instructor aid: run from the tutorial root with MadGraph 3.5.16.
+set auto_update 0 --no_save
+set automatic_html_opening False --no_save
+set ninja None --no_save
+set collier None --no_save
+import model loop_sm_scalar
+generate g g > h eta0 [noborn=QCD]
+output Work/gg_h_eta0_2e2mu
+quit

@@ -12,6 +12,7 @@ __pycache__/
 *.lhe.gz
 !tests/fixtures/*.lhe
 !examples/gg_h_eta0_pilot.lhe.gz
+!examples/gg_h_eta0_2e2mu_pilot.lhe.gz
 MG5_debug
 /additional_command
 /py.py

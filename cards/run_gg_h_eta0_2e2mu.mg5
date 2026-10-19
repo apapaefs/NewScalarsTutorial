@@ -1,0 +1,28 @@
+# Run after the generation and width cards, from the tutorial root.
+# The parameter card must already contain the checked nonzero eta0/Z widths.
+set auto_update 0 --no_save
+set automatic_html_opening False --no_save
+set run_mode 0 --no_save
+launch Work/gg_h_eta0_2e2mu -n four_lepton_pilot
+shower=OFF
+madspin=OFF
+reweight=OFF
+done
+set nevents 100
+set iseed 23456
+set lpp1 1
+set lpp2 1
+set ebeam1 6500
+set ebeam2 6500
+set pdlabel nn23lo1
+set fixed_ren_scale False
+set fixed_fac_scale False
+set dynamical_scale_choice 3
+set scalefact 1.0
+set ickkw 0
+set ptheavy 0.0
+set use_syst False
+set systematics_program none
+set event_norm sum
+done
+quit

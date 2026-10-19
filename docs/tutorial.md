@@ -157,6 +157,8 @@ parameter comparison. Explain which conclusions concern rates and which concern
 shapes, and identify the uncertainty you have actually measured.
 
 An optional extension is to vary renormalisation and factorisation scales with
-the instructor. A second extension is to decay the particles and redesign the
-selection. Neither a statistical error bar nor a sample of undecayed scalars
-accounts for theory uncertainties or detector reconstruction.
+the instructor. The [next guided exercise](four_lepton.md) decays the new scalar
+to two Z bosons and then four leptons, while the associated Higgs stays stable.
+You will reconstruct the masses and apply a lepton selection. Neither a statistical
+error bar nor these parton-level samples account for theory uncertainties or
+detector reconstruction.

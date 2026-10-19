@@ -28,7 +28,9 @@ No heavy-top effective interaction is substituted for the full loop amplitude.
 
 The model calls the particles `h` (PDG `25`) and `eta0` (PDG `99925`). We select
 their **outgoing status-1 records**. This definition changes if the particles
-are decayed or a shower is added; those samples are outside the present analyser.
+are decayed or a shower is added; those samples are outside the original analyser.
+The separate [four-lepton exercise](four_lepton.md) selects the stable Higgs and
+the four outgoing charged leptons after the new scalar decays.
 
 ## A starting point for the exercise
 
@@ -129,6 +131,71 @@ than applying this formula to an ambiguous mixture.
 
 Use a complete run file. Editing/truncating it or concatenating independent
 runs changes the weight normalisation and cannot be repaired by its old header.
+
+## Four-lepton decay exercise
+
+The continuation studies `g g > h eta0`, followed by
+`eta0 > z z, z > e+ e-, z > mu+ mu-`, with the associated Higgs stable.
+Production uses the same masses, couplings, beams, PDF and scales as above,
+but the new sample has nonzero, consistently calculated eta0 and Z widths.
+The original undecayed pilot and its banner are unchanged.
+
+The supplied parameter card uses approximate total widths calculated from all
+kinematically open tree-level two-body channels in the installed UFO:
+
+| Particle | Total width [GeV] | Channels included |
+| --- | --- | --- |
+| `eta0` | 1.864508 | `h h`, `w+ w-`, `z z`, `t t~`, `b b~`, `ta+ ta-` |
+| `z` | 2.441756 | Five quark pairs, three charged-lepton pairs, three neutrino pairs |
+
+The light-fermion Yukawa couplings set to zero by the model restriction do not
+produce additional scalar modes. These totals exclude loop-induced decay modes,
+off-shell multibody contributions and higher-order corrections. They are teaching
+approximations, not precision physical widths. The top and Higgs widths remain
+zero; calculating eta0's partial width into stable Higgs bosons does not cause
+the associated Higgs in our chosen event sample to decay.
+
+The instructor width card calls `compute_widths 99925 23 --body_decay=2`.
+Copy the supplied teaching parameter card into the new process first and use
+that same path for both input and output. In MadGraph 3.5.16 the numerical
+integration can otherwise use an existing output card instead of the specified
+input card. The generated partial widths were cross-checked against the analytic
+tree-level formulas for eta0 to two Higgs bosons and to two Z bosons; see the
+[validation record](validation.md).
+
+MadSpin `spinmode none` generates the complete scalar decay chain separately
+and combines it with each production event. It supports loop-induced production
+and fixes the primary scalar mass at 400 GeV. No correlation between production
+and decay spin states is imposed; the parent is a scalar. Specifying the full
+chain in one command evaluates the decay matrix element with both Z decays,
+including the correlations within that chain. The internal Z propagators have
+finite widths. This is not the complete off-shell production-and-decay amplitude.
+See the [MadSpin manual](https://cp3.irmp.ucl.ac.be/projects/madgraph/wiki/MadSpin).
+
+For two on-shell Z bosons, the mixed-flavour branching probability is
+
+```text
+B(eta0 -> ZZ -> e+ e- mu+ mu-) = B(eta0 -> ZZ) * 2 * B(Z -> ee) * B(Z -> mumu).
+```
+
+The factor of two accounts for the two assignments of the electron and muon
+pairs to the identical Z bosons. MadSpin's full-chain partial width includes
+this combinatorial factor already. Its numerical result can differ from the
+factorised expression through finite Z widths, the resonance mass window and
+integration uncertainty. The formula is a cross-check, not an extra multiplier.
+
+The decayed LHE `<init>` cross section and nominal weights have already been
+scaled by MadSpin's branching factor. The new analyser uses that cross section
+directly. Its shape normalisation uses the entire decayed sample as the reference:
+after the lepton cut, the area is the efficiency within this decay channel.
+Bin errors use squared weights as in the production lesson. They do not include
+the decay-integration uncertainty, theory variations or detector effects.
+
+The new selection requires exactly one outgoing Higgs and one each of PDGs
+`11`, `-11`, `13`, `-13`. Intermediate status-2 records are excluded from the
+reconstruction. The momentum check compares the incoming gluons with the five
+outgoing particles before the lepton cut. There is no shower, lepton isolation,
+detector simulation, background estimate or Higgs decay in this exercise.
 
 ## Scope
 
