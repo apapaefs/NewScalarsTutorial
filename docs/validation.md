@@ -170,10 +170,12 @@ The actual decayed sample passed these checks:
   starter. The completed script produced all three PDF/PNG mass plots; the
   distributed starter still produces only `m_ee`. All three completed plots
   were visually checked for peaks, labels and layout.
-- All **18 regression tests** passed, including the nine original tests. The
+- All **23 regression tests** passed with Python 3.12.14, including the thirteen
+  existing production-analyser tests. The
   additions cover the real decay sample, analytic width checks, reconstruction,
   status filtering, incompatible final states, signed weights, cutflow exports,
-  threshold boundaries, zero-event selections, flow bins, output protection,
+  threshold boundaries, mismatched event/weight lists, zero-event selections,
+  flow bins, output protection,
   and execution of the exact worksheet snippets in both normalisation modes.
 
 The beginner walkthrough was also checked on 19 October 2026. The four run

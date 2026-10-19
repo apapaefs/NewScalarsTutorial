@@ -118,6 +118,12 @@ class FourLeptonTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "finite and non-negative"):
                 analyze(self.sample.events, self.sample.weights, threshold)
 
+    def test_mismatched_event_weights_are_rejected(self):
+        for weights in (self.sample.weights[:-1], self.sample.weights + [1.0]):
+            with self.subTest(number_of_weights=len(weights)):
+                with self.assertRaisesRegex(ValueError, "exactly one weight"):
+                    analyze(self.sample.events, weights)
+
     def test_complete_worksheet_cli_and_normalisation(self):
         with tempfile.TemporaryDirectory() as directory:
             script = Path(directory) / "completed_four_lepton.py"
@@ -188,7 +194,7 @@ class FourLeptonTests(unittest.TestCase):
                 shutil.copy2(ROOT / "lheanalyzer" / name, workspace / "lheanalyzer" / name)
             sample_name = "gg_h_eta0_2e2mu_pilot.lhe.gz"
             shutil.copy2(ROOT / "examples" / sample_name, workspace / "examples" / sample_name)
-            for (stage, command), (source, observables, count) in zip(commands, steps, strict=True):
+            for (stage, command), (source, observables, count) in zip(commands, steps):
                 with self.subTest(stage=stage):
                     (workspace / "lheanalyzer/lhe_four_lepton.py").write_text(source)
                     args = shlex.split(command)

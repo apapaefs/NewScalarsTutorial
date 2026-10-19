@@ -24,6 +24,10 @@ else:
 
 def analyze(events, weights, min_lepton_pt=0.0):
     """Select the five outgoing particles, apply a cut, and reconstruct m_ee."""
+    # Each event needs one weight. Check the lengths before pairing them below.
+    if len(events) != len(weights):
+        raise ValueError("Each event must have exactly one weight; "
+                         "the event and weight lists have different lengths.")
     if not math.isfinite(min_lepton_pt) or min_lepton_pt < 0:
         raise ValueError("The lepton pT threshold must be finite and non-negative.")
 
@@ -37,7 +41,7 @@ def analyze(events, weights, min_lepton_pt=0.0):
     checks = {"max_four_momentum_residual_GeV": 0.0}
 
     # Work through one event and its weight at a time.
-    for particles, weight in zip(events, weights, strict=True):
+    for particles, weight in zip(events, weights):
         cutflow["input"].append(weight)
         # Status 2 denotes intermediate particles; counting them here would
         # double-count their decay products. The stable Higgs has status 1.
