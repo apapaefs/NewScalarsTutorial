@@ -16,6 +16,6 @@ SHA-256 of the source-only archive:
 2cc30d49391240d2a4f80bcea5d259b3ce9aa19d81ab4e36c1c2d662026aba8a
 ```
 
-The original archive is retained for provenance and for the optional instructor
+The original archive is kept for provenance and for the optional instructor
 installer. Its origin and checksum are recorded in
 [docs/provenance.md](../docs/provenance.md).

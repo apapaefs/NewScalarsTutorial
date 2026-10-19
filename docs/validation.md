@@ -27,7 +27,7 @@ and plotting lesson is recorded below.
   small sample. The integration uncertainty in `<init>` was `1.347514e-6 pb`.
 - With `pT(h) >= 100 GeV`, 59 events passed and the selected cross section was
   `1.7585776e-4 pb`, exactly 59% of the inclusive value for these equal-weight
-  events. The histogram normalisation retained that efficiency.
+  events. The histogram area was reduced by the same factor of 0.59.
 - The synthetic signed-weight fixture and the actual pilot passed the original
   seven regression tests covering kinematics, gzip, nominal/variation weights,
   init metadata, `sum(w²)`, bin widths/flow, selection normalisation and invalid
@@ -69,7 +69,7 @@ on the same machine and date:
   produced seven PDF and seven PNG plots. The new rapidities agreed with
   `0.5 * log(E_gluon_plus / E_gluon_minus)` calculated from the incoming gluons.
   The new histogram integrated to the inclusive cross section; after the
-  100 GeV Higgs-pT cut it retained the expected 59% efficiency.
+  100 GeV Higgs-pT cut its area was 59% of the inclusive cross section, as expected.
 - Representative pT and pair-rapidity PNGs were inspected for labels and layout.
 
 The pair-rapidity solution is deliberately left as a student exercise in the
@@ -112,12 +112,93 @@ checks on pushes and pull requests. It tests Python 3.9 with minimum and latest
 compatible dependencies, plus Python 3.12 with latest compatible dependencies.
 The minimum combination is NumPy 1.24.0, Matplotlib 3.9.4 and six 1.16.0.
 
+## Four-lepton exercise validation
+
+On 19 October 2026 the stable-Higgs four-lepton continuation was tested with
+MadGraph5_aMC@NLO 3.5.16, Python 3.12.14, NumPy 2.5.3 and Matplotlib 3.11.2.
+This used the existing local Git distribution of MadGraph and the supplied UFO.
+The input cards are in `cards/`; the complete metadata and internal decay run
+card are saved with the example under `examples/`.
+
+The width calculation included all open tree-level two-body channels for eta0
+and Z, with the Higgs and top widths zero. It gave `Gamma_eta0 = 1.864508 GeV`
+and `Gamma_Z = 2.441756 GeV`. Independent tree-level formula checks used the
+vertex `eta0 h h: -2 i kap112` and the mixing-scaled Standard Model ZZ vertex:
+
+| Partial width | MadGraph [GeV] | Analytic formula [GeV] |
+| --- | --- | --- |
+| eta0 to h h | 0.7764997 | 0.7765018 |
+| eta0 to Z Z | 0.3082500 | 0.3082480 |
+
+Both agree within `2e-5` relative tolerance. The width workflow copies the
+teaching parameter card into the new process first, then uses that same path
+for input and output. This avoids MadGraph's numerical width integration using
+an older, already-existing output card. The model source was not changed.
+
+A separate production run generated 100 events with seed `23456`, the documented
+13 TeV beams, `nn23lo1` PDF, HT/2 scales, and the checked widths. Its cross section
+was `(2.956610e-4 +/- 1.454767e-6) pb`. The original zero-width production pilot
+was not used as the input to this decay run and is unchanged.
+
+MadSpin used `spinmode none`, input seed `34567`, and the single complete chain
+`eta0 > z z, z > e+ e-, z > mu+ mu-`. The internal decay-generation seed was
+`750713659`, derived from the input seed. Its internal run card has all kinematic
+cuts disabled and `bwcutoff = 15` for the two Z resonances. The full-chain partial
+width was `(6.9886e-4 +/- 1.1999e-5) GeV`.
+
+The ratio of that partial width to the approximate eta0 total width is
+`3.7482277e-4`. It agrees, up to the precision written to the LHE file, with the
+decayed/production cross-section ratio `3.7482275e-4`. The factorised on-shell
+estimate `B(eta0 -> ZZ) * 2 * B(Z -> ee) * B(Z -> mumu)` is `3.9098550e-4`.
+The roughly 4.1% difference is consistent with finite Z resonance windows and
+the decay-integration uncertainty; the factor of two is included. This comparison
+is a normalisation diagnostic, not an independent precision decay calculation.
+
+The actual decayed sample passed these checks:
+
+- Exactly 100 events have one status-1 Higgs and the four required status-1
+  leptons, with intermediate eta0 and Z records.
+- The maximum incoming-minus-outgoing four-momentum residual is about
+  `1.15e-6 GeV`. The largest deviation of reconstructed `m_4l` from 400 GeV is
+  `2.76e-8 GeV`, consistent with the written event precision.
+- The nominal weights sum to the decayed LHE cross section, `1.1082047e-7 pb`.
+  Each completed uncut mass histogram integrates to that cross section.
+- Requiring every lepton to have `pT >= 10 GeV` selects 95 events: weighted
+  efficiency `0.95` and selected cross section `1.052794465e-7 pb`. All three
+  cut histogram integrals agree with that value, including flow bins.
+- The guide's six Python snippets were applied to a temporary copy of the
+  starter. The completed script produced all three PDF/PNG mass plots; the
+  distributed starter still produces only `m_ee`. All three completed plots
+  were visually checked for peaks, labels and layout.
+- All **18 regression tests** passed, including the nine original tests. The
+  additions cover the real decay sample, analytic width checks, reconstruction,
+  status filtering, incompatible final states, signed weights, cutflow exports,
+  threshold boundaries, zero-event selections, flow bins, output protection,
+  and execution of the exact worksheet snippets in both normalisation modes.
+
+The beginner walkthrough was also checked on 19 October 2026. The four run
+commands were read directly from the guide and executed in a temporary tutorial
+directory using the supplied 100-event sample. Starting from the distributed
+script, the guide's additions were applied in order: the starter produced one
+mass plot, the muon-pair step produced two, and the four-lepton step produced
+three, each in PNG and PDF. The baseline selected 100 events and the 10 GeV
+lepton cut selected 95. The checks verify the commands and code snippets;
+they are not a classroom trial with students.
+
+The decayed LHE uncertainty `5.4527976e-10 pb` is the production integration
+uncertainty scaled by the branching factor. It does not include the separately
+measured decay-integration uncertainty. The plots' bin errors use squared event
+weights at fixed normalisation. No detector, shower, background or theory-variation
+study was performed. The sample and checks are for the teaching benchmark.
+
 ## Reproduce the analysis checks
 
 ```bash
 python -m unittest discover -s tests -v
 python lheanalyzer/lhe_analyzer.py examples/gg_h_eta0_pilot.lhe.gz check
 python lheanalyzer/lhe_analyzer.py examples/gg_h_eta0_pilot.lhe.gz check_pt100 --min-pt-h 100
+python lheanalyzer/lhe_four_lepton.py examples/gg_h_eta0_2e2mu_pilot.lhe.gz check_4l
+python lheanalyzer/lhe_four_lepton.py examples/gg_h_eta0_2e2mu_pilot.lhe.gz check_4l_pt10 --min-lepton-pt 10
 ```
 
 Inspect `results/check/summary.json` and the CSV, and repeat the generation
@@ -202,7 +283,7 @@ intermediate resonance as if it were an outgoing particle.
 overflow integrals, and account for the selection efficiency. Enlarge the range
 of `bins=np.linspace(...)` in the appropriate `make_plots()` call when a changed
 mass or collider energy extends the plotted range.
-Negative weights must be retained; their errors use squared weights.
+Include negative weights in the sums; calculate their errors using squared weights.
 
 **The reader reports a malformed/truncated file.** Check that the run and
 compression finished. Do not analyse a file while it is being written or simply

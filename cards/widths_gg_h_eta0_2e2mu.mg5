@@ -1,0 +1,9 @@
+# Recalculate all open tree-level two-body modes for eta0 and Z.
+# First copy cards/param_card_gg_h_eta0_2e2mu.dat into the process Cards directory.
+# Use the same input/output path: MG5 may otherwise integrate with an older output card.
+set auto_update 0 --no_save
+set automatic_html_opening False --no_save
+set run_mode 0 --no_save
+import model loop_sm_scalar
+compute_widths 99925 23 --body_decay=2 --path=Work/gg_h_eta0_2e2mu/Cards/param_card.dat --output=Work/gg_h_eta0_2e2mu/Cards/param_card.dat
+quit
