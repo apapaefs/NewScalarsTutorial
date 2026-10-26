@@ -624,6 +624,12 @@ every run command and gives a checkpoint after each step. A small decayed sample
 is provided, so you only need the Python setup to begin; running MadGraph is
 an [optional extension](docs/four_lepton_generation.md).
 
+Then continue with [reconstructing the Higgs from bottom quarks](docs/higgs_bb.md).
+The next starter includes the completed lepton analysis. You will add the
+bottom-pair mass and transverse momentum, try your own observable, and apply
+simple selections. An optional Standard Model background sample lets you compare
+shapes, rates and the effect of mass windows using the same analysis code.
+
 ## Reference material
 
 The manual steps above are the student exercise. The files in `cards/` and

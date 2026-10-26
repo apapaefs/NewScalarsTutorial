@@ -481,7 +481,11 @@ come from a filename, indentation or a missing line.
 | The results folder is non-empty | Choose a new results name, for example `four_lepton_complete_2`. To replace that run's existing outputs deliberately, add `--overwrite`. |
 | Zero events pass a very high pT cut | This is a valid result. Try a lower threshold with a new results name. |
 
-The analysis exercise ends here. [Generating a new sample](four_lepton_generation.md)
+For the next analysis lesson, follow [Finding the Higgs in a bottom-quark pair](higgs_bb.md).
+It starts from the completed lepton analysis and adds the Higgs decay, new
+observables and an optional background comparison.
+
+[Generating a new four-lepton sample](four_lepton_generation.md)
 is a separate, optional extension to work through with your instructor.
 The [physics notes](physics.md#four-lepton-decay-exercise) and
 [validation notes](validation.md#four-lepton-exercise-validation) give the

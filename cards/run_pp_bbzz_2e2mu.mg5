@@ -1,0 +1,45 @@
+# Optional background pilot. Run after the matching generate card.
+set auto_update 0 --no_save
+set automatic_html_opening False --no_save
+set run_mode 0 --no_save
+launch Work/pp_bbzz_2e2mu -n bbzz_pilot
+shower=OFF
+madspin=OFF
+reweight=OFF
+done
+set nevents 500
+set iseed 56789
+set lpp1 1
+set lpp2 1
+set ebeam1 6500
+set ebeam2 6500
+set pdlabel nn23lo1
+set fixed_ren_scale False
+set fixed_fac_scale False
+set dynamical_scale_choice 3
+set scalefact 1.0
+set ickkw 0
+set use_syst False
+set systematics_program none
+set event_norm sum
+set cut_decays False
+set ptj 0.0
+set ptb 0.0
+set ptl 0.0
+set etaj -1.0
+set etab -1.0
+set etal -1.0
+set drjj 0.0
+set drbb 0.0
+set drll 0.0
+set drbl 0.0
+set drjl 0.0
+set mmll 0.0
+set bwcutoff 15.0
+set param_card mass 25 125.0
+set param_card mass 5 4.7
+set param_card yukawa 5 4.7
+set param_card decay 6 0.0
+set param_card decay 23 2.441756
+done
+quit

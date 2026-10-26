@@ -1,0 +1,7 @@
+# Decay BOTH scalars in one pass; MadSpin cannot re-decay its earlier output.
+set spinmode none
+set seed 45678
+import Work/gg_h_eta0_bb2e2mu/Events/bb_four_lepton_pilot/unweighted_events.lhe.gz
+decay eta0 > z z, z > e+ e-, z > mu+ mu-
+decay h > b b~
+launch

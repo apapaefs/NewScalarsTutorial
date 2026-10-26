@@ -87,3 +87,59 @@ The compressed file is 37,066 bytes. Its SHA-256 is:
 ```text
 df5174e87f0f0485461d98d739f994e0eb88ab5d40a196fcc6ca1692881002c9
 ```
+
+## Higgs-decay lesson and optional background
+
+The [Higgs-decay mini-tutorial](../docs/higgs_bb.md) uses two further small,
+real MadGraph 3.5.16 samples generated on 26 October 2026. Both have 13 TeV
+proton beams, the built-in `nn23lo1` PDF and HT/2 scales, without a shower or
+detector simulation. Each final state has one outgoing b, one bbar and the four
+leptons. Full production run and parameter cards are embedded in the LHE files.
+
+| File | Process | Events | Cross section including decays [pb] |
+| --- | --- | ---: | ---: |
+| `gg_h_eta0_bb2e2mu_pilot.lhe.gz` | `gg -> h eta0`, `h -> bb`, `eta0 -> ZZ -> 2e2mu` | 100 | `1.071748e-7` |
+| `pp_bbzz_2e2mu_pilot.lhe.gz` | Tree-level QCD `pp -> bbZZ -> bb2e2mu` | 500 | `4.277055e-4` |
+
+Each has a matching JSON metadata file containing its checksum, seeds, rate,
+selection counts and approximations. The signal uses production seed `67890`,
+MadSpin seed `45678`, and internal h/eta0 decay seeds `101867072`/`101867073`.
+The background seed is `56789`. Instructor cards are listed in the metadata;
+the signal's two internal decay run cards are also saved here from their run
+banners. The earlier samples and their embedded cards are unchanged.
+
+The signal's approximate Higgs width is `5.433204e-3 GeV`, from the UFO's open
+bottom-pair, tau-pair and effective photon-pair channels. Its h-to-bb branching
+factor is `0.95249507`. The eta0 full-chain branching factor is `3.7856099e-4`;
+the product agrees with the final/production cross-section ratio
+`3.6057746e-4` to LHE precision. The Higgs-width approximation omits important
+physical contributions; see the [generation notes](../docs/higgs_bb_generation.md).
+Use the final LHE cross section without multiplying by branching factors again.
+
+The signal production integration error is `1.324253e-6 pb`; the decayed LHE
+reports its scaled value, `4.7749581e-10 pb`. That error excludes the separately
+estimated decay-integration errors. The background integration error is
+`3.802866e-6 pb`. These are small teaching samples, not precision predictions.
+
+For `pT(lepton) >= 10 GeV`, `pT(b), pT(bbar) >= 25 GeV`, followed by
+`105 <= m_bb <= 145 GeV` and `350 <= m_4l <= 450 GeV`:
+
+| Stage | Signal events | Background events |
+| --- | ---: | ---: |
+| Input / correct final state | 100 | 500 |
+| Lepton pT | 96 | 456 |
+| Also bottom-quark pT | 82 | 66 |
+| Also bb mass window | 82 | 7 |
+| Also four-lepton mass window | 82 | 3 |
+
+After all cuts the cross sections are `8.7883336e-8 pb` and `2.566233e-6 pb`.
+Three sampled background events give a very uncertain background estimate;
+a zero count under another cut would not establish an absent background.
+All events have equal, positive nominal weights within each sample.
+
+SHA-256 checksums:
+
+```text
+e037fd78251ee64d87d9d3e8cd3401e53f3121eead55f6c1d3254dd0023276fa  gg_h_eta0_bb2e2mu_pilot.lhe.gz
+0935778e56c2ff53fc3e71e0da12c915e8b93dd511a30b8596d87d59a4062f34  pp_bbzz_2e2mu_pilot.lhe.gz
+```

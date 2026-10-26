@@ -1,0 +1,9 @@
+# First copy the supplied Higgs-decay parameter card to this process directory.
+# Recalculate all available open two-body Higgs channels, including the UFO's
+# effective h gamma gamma vertex. This is not a precision SM Higgs width.
+set auto_update 0 --no_save
+set automatic_html_opening False --no_save
+set run_mode 0 --no_save
+import model loop_sm_scalar
+compute_widths 25 --body_decay=2 --path=Work/gg_h_eta0_bb2e2mu/Cards/param_card.dat --output=Work/gg_h_eta0_bb2e2mu/Cards/param_card.dat
+quit

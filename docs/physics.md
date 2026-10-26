@@ -197,6 +197,38 @@ reconstruction. The momentum check compares the incoming gluons with the five
 outgoing particles before the lepton cut. There is no shower, lepton isolation,
 detector simulation, background estimate or Higgs decay in this exercise.
 
+## Higgs-decay continuation and background
+
+The [next lesson](higgs_bb.md) adds `h -> b b~` to the signal and reconstructs
+both scalar candidates from the six outgoing particles. It uses a separate
+100-event production sample with a nonzero Higgs width and decays both scalars
+in one MadSpin pass. The Higgs and eta0 masses remain fixed, so the sharp
+reconstructed peaks do not describe detector mass resolution.
+
+The approximate Higgs width is `0.005433204 GeV`, calculated from the open
+two-body modes available in the supplied UFO: bottom and tau pairs, plus the
+effective photon-pair vertex. It excludes off-shell vector-boson modes, the
+gluon channel and higher-order corrections. The fixed 4.7 GeV bottom Yukawa
+input and the missing channels give `B(h -> bb) = 0.952495`; this is not a
+precision Standard Model branching fraction. The
+[generation notes](higgs_bb_generation.md) describe the calculation and its inputs.
+
+The optional background is the tree-level QCD contribution to `pp -> bbZZ`
+with the two Z decay chains specified explicitly. It includes incoming gluons
+and u/d/s/c quarks and antiquarks, with massive outgoing bottom quarks. It uses
+the same 13 TeV beams, built-in PDF and HT/2 scale convention as the signal.
+It is one background component, not the full `bb4l` prediction; the signal and
+background are generated independently and their interference is omitted.
+
+Both samples are analysed using exactly one status-1 bottom quark, one bottom
+antiquark and the four specified leptons. Intermediate-particle truth records
+are not needed for candidate reconstruction or selection. The bottom quarks
+are not clustered jets, and no flavour-tagging efficiency is assumed. Rate
+plots use each decayed LHE cross section directly. The comparison program's
+shape mode divides by the selected cross section, giving unit area including
+flow bins. Its plotted errors scale the squared-weight errors by that same
+fixed denominator; they do not include normalisation correlations.
+
 ## Scope
 
 This project studies generator-level kinematics. It provides neither an NLO

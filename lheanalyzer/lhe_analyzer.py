@@ -101,7 +101,8 @@ def analyze(events, weights, min_pt_h=0.0):
     return output, selected_weights, checks
 
 
-def plot_histogram(values, weights, bins, xlabel, ylabel, filename):
+def plot_histogram(values, weights, bins, xlabel, ylabel, filename, *,
+                   title=r"$g g \rightarrow h\,\eta_0$ (parton level)"):
     """Draw ONE histogram. Copy a call in make_plots() to create another plot.
 
     values: one measured number per event; weights: one normalised event weight.
@@ -122,7 +123,7 @@ def plot_histogram(values, weights, bins, xlabel, ylabel, filename):
     ax.errorbar(centres, heights, yerr=errors, fmt="none", ecolor="teal")
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
-    ax.set_title(r"$g g \rightarrow h\,\eta_0$ (parton level)")
+    ax.set_title(title)
     ax.set_xlim(bins[0], bins[-1])
     fig.savefig(str(filename) + ".pdf")
     fig.savefig(str(filename) + ".png", dpi=160)

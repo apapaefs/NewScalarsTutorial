@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-26",
+  "generator": "MadGraph5_aMC@NLO 3.5.16",
+  "process": "g g > h eta0 [noborn=QCD]; h > b b~; eta0 > z z, z > e+ e-, z > mu+ mu-",
+  "sample": "signal",
+  "events": 100,
+  "shower": false,
+  "detector_simulation": false,
+  "collision_energy_GeV": 13000,
+  "pdf": "nn23lo1 (built-in)",
+  "scale": "HT/2 (dynamical_scale_choice=3)",
+  "bottom_mass_GeV": 4.7,
+  "seed": 67890,
+  "cross_section_pb": 1.071748e-07,
+  "integration_error_pb": 4.7749581e-10,
+  "sha256": "e037fd78251ee64d87d9d3e8cd3401e53f3121eead55f6c1d3254dd0023276fa",
+  "size_bytes": 44091,
+  "max_four_momentum_residual_GeV": 1.1209999684069771e-06,
+  "weight_sum": 1.071748e-07,
+  "negative_weight_events": 0,
+  "cutflow_counts": {
+    "baseline": {
+      "input": 100,
+      "correct_final_state": 100,
+      "lepton_pt": 100,
+      "b_pt": 100,
+      "mbb_window": 100,
+      "m4l_window": 100
+    },
+    "pt": {
+      "input": 100,
+      "correct_final_state": 100,
+      "lepton_pt": 96,
+      "b_pt": 82,
+      "mbb_window": 82,
+      "m4l_window": 82
+    },
+    "windows": {
+      "input": 100,
+      "correct_final_state": 100,
+      "lepton_pt": 96,
+      "b_pt": 82,
+      "mbb_window": 82,
+      "m4l_window": 82
+    }
+  },
+  "selected_cross_sections_pb": {
+    "baseline": 1.071748e-07,
+    "pt": 8.7883336e-08,
+    "windows": 8.7883336e-08
+  },
+  "mbb_range_GeV": [
+    124.99999995766574,
+    125.00000005603115
+  ],
+  "production_seed": 67890,
+  "madspin_seed": 45678,
+  "spinmode": "none",
+  "h_decay_seed": 101867072,
+  "eta0_decay_seed": 101867073,
+  "production_cross_section_pb": 0.000297231,
+  "production_integration_error_pb": 1.324253e-06,
+  "h_total_width_GeV": 0.005433204,
+  "eta0_total_width_GeV": 1.864508,
+  "z_total_width_GeV": 2.441756,
+  "h_decay_partial_width_GeV": 0.0051751,
+  "h_decay_integration_error_GeV": 3.0508e-11,
+  "eta0_decay_partial_width_GeV": 0.00070583,
+  "eta0_decay_integration_error_GeV": 7.7957e-06,
+  "h_branching_factor": 0.9524950655267133,
+  "eta0_branching_factor": 0.00037856099303408726,
+  "total_decay_factor": 0.0003605774633197748,
+  "max_reconstructed_h_four_momentum_residual_GeV": 1.1100000847363845e-06,
+  "max_mbb_deviation_from_125_GeV": 5.60311548269965e-08,
+  "max_m4l_deviation_from_400_GeV": 4.950999255015631e-08,
+  "width_approximation": "Available open two-body UFO modes: h -> bb, tau tau, gamma gamma (effective vertex). Excludes off-shell WW/ZZ, gg and higher-order corrections; charm Yukawa is zero.",
+  "error_note": "LHE error scales the production integration error; separate decay-integration errors are not included.",
+  "normalisation_note": "The LHE cross section already includes all specified decays. Do not multiply by branching fractions again.",
+  "decay_run_cards": {
+    "h": "examples/gg_h_eta0_bb2e2mu_h_decay_run_card.dat",
+    "eta0": "examples/gg_h_eta0_bb2e2mu_eta0_decay_run_card.dat"
+  },
+  "generator_commit": "3ea6e242a6021cc909c1016dd1a4f0ab1c398ac7",
+  "cards": [
+    "cards/generate_gg_h_eta0_bb2e2mu.mg5",
+    "cards/param_card_gg_h_eta0_bb2e2mu.dat",
+    "cards/widths_higgs_bb.mg5",
+    "cards/run_gg_h_eta0_bb2e2mu.mg5",
+    "cards/madspin_higgs_bb.dat"
+  ],
+  "analysis_selections": {
+    "baseline": {
+      "min_lepton_pt_GeV": 0,
+      "min_b_pt_GeV": 0,
+      "mbb_window_GeV": null,
+      "m4l_window_GeV": null
+    },
+    "pt": {
+      "min_lepton_pt_GeV": 10,
+      "min_b_pt_GeV": 25,
+      "mbb_window_GeV": null,
+      "m4l_window_GeV": null
+    },
+    "windows": {
+      "min_lepton_pt_GeV": 10,
+      "min_b_pt_GeV": 25,
+      "mbb_window_GeV": [
+        105,
+        145
+      ],
+      "m4l_window_GeV": [
+        350,
+        450
+      ]
+    }
+  }
+}

@@ -292,3 +292,59 @@ compression finished. Do not analyse a file while it is being written or simply
 concatenate independent LHE runs. Multiple-subprocess files and weight strategies
 other than those described in the physics notes require an extended reader and
 an explicit normalisation prescription.
+
+## Higgs-decay and background exercise
+
+On 26 October 2026 the continuation to `h -> b b~` was generated and checked
+with the same MadGraph5_aMC@NLO 3.5.16 Git distribution. The model archives
+and both earlier real examples were verified unchanged. The new source,
+cards, small examples and metadata are separate from generated process files.
+
+- The signal has 100 events with two status-1 bottom quarks and four status-1
+  leptons, with an intermediate Higgs, eta0 and two Z bosons. The background
+  has 500 events with the same outgoing particles, including both gluon and
+  light-quark initial states.
+- The largest incoming-minus-outgoing four-momentum residual is `1.121e-6 GeV`
+  for signal and `1.070e-7 GeV` for background. Reconstructed signal masses
+  differ from 125 and 400 GeV by at most `5.61e-8` and `4.96e-8 GeV`, respectively.
+  The reconstructed bottom-pair pT agrees with the intermediate Higgs pT to
+  within `2e-6 GeV`.
+- The h-to-bb partial width, `0.00517510 GeV`, agrees with the tree-level
+  expression `3 G_F m_h m_b^2 cos(theta)^2 / (4 pi sqrt(2)) * beta_b^3` within
+  `2e-5` relative tolerance. The non-decay parameters agree with the previous
+  benchmark. The total width also includes the tau pair and the UFO's effective
+  photon-pair channel, as documented in the generation notes.
+- The signal's final/production cross-section ratio agrees with the product
+  of MadSpin's h and eta0 branching factors. The eta0 factor agrees within
+  10% with `B(eta0 -> ZZ) * 2 * B(Z -> ee) * B(Z -> mumu)`, including the
+  finite-Z-window and integration effects discussed for the previous lesson.
+- The guide's selections give `100 -> 96 -> 82 -> 82 -> 82` signal events and
+  `500 -> 456 -> 66 -> 7 -> 3` background events. Weighted cutflows and selected
+  cross sections agree with these fractions for the supplied positive,
+  equal-weight samples. Individual histogram integrals and comparison-plot
+  integrals agree with the stated normalisations, including flow bins.
+- All six Python additions and all nine marked student commands were executed
+  in order in a temporary tutorial directory. The distributed starter made
+  three plots, the first addition made four, and the completed exercise made
+  five, in PNG and PDF. The comparison program produced shape and rate overlays,
+  histogram CSV, selection tables and JSON reports.
+- All **31 tests** passed with Python 3.12.14, NumPy 2.5.3 and Matplotlib 3.11.2.
+  These include the 23 earlier tests plus eight for the new reconstruction,
+  truth-status filtering, light-quark initial states, invalid samples and cuts,
+  signed weights, mass-window boundaries, empty selections, sample checksums,
+  decay normalisation and executable student workflow. A syntax compilation
+  check also passed with Python 3.9.6; the new full suite was run locally with
+  Python 3.12, not with Python 3.9.
+- The bottom-pair mass, four-lepton mass and pair-pT shape overlays, and a rate
+  overlay after mass windows, were visually checked for labels, peaks and layout.
+  The signal peak bins are centred on their fixed parent masses. The background
+  bottom-pair distribution has four overflow entries after the momentum cuts;
+  these contributions are included in normalisation and report exports.
+
+The distributed signal comes from a new production run and a single MadSpin
+pass specifying both scalar decays. No existing sample header was edited.
+The samples test reconstruction and selection at parton level. No complete
+background model, interference calculation, detector resolution, b-tagging
+model or discovery sensitivity was evaluated. The Higgs branching approximation
+and the background's limited process content are stated in
+[the generation guide](higgs_bb_generation.md).

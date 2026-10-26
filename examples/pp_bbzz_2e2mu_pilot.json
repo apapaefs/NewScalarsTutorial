@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-26",
+  "generator": "MadGraph5_aMC@NLO 3.5.16",
+  "process": "p p > b b~ z z QCD=2 QED=2, z > e+ e-, z > mu+ mu-",
+  "sample": "background",
+  "events": 500,
+  "shower": false,
+  "detector_simulation": false,
+  "collision_energy_GeV": 13000,
+  "pdf": "nn23lo1 (built-in)",
+  "scale": "HT/2 (dynamical_scale_choice=3)",
+  "bottom_mass_GeV": 4.7,
+  "seed": 56789,
+  "cross_section_pb": 0.0004277055,
+  "integration_error_pb": 3.802866e-06,
+  "sha256": "0935778e56c2ff53fc3e71e0da12c915e8b93dd511a30b8596d87d59a4062f34",
+  "size_bytes": 166125,
+  "max_four_momentum_residual_GeV": 1.0700023267418146e-07,
+  "weight_sum": 0.00042770552,
+  "negative_weight_events": 0,
+  "cutflow_counts": {
+    "baseline": {
+      "input": 500,
+      "correct_final_state": 500,
+      "lepton_pt": 500,
+      "b_pt": 500,
+      "mbb_window": 500,
+      "m4l_window": 500
+    },
+    "pt": {
+      "input": 500,
+      "correct_final_state": 500,
+      "lepton_pt": 456,
+      "b_pt": 66,
+      "mbb_window": 66,
+      "m4l_window": 66
+    },
+    "windows": {
+      "input": 500,
+      "correct_final_state": 500,
+      "lepton_pt": 456,
+      "b_pt": 66,
+      "mbb_window": 7,
+      "m4l_window": 3
+    }
+  },
+  "selected_cross_sections_pb": {
+    "baseline": 0.0004277055,
+    "pt": 5.6457126e-05,
+    "windows": 2.566233e-06
+  },
+  "mbb_range_GeV": [
+    10.039951202703152,
+    1615.4475754730395
+  ],
+  "incoming_partons": "g, u, d, s, c and antiquarks; no incoming b",
+  "contribution": "Tree-level QCD bbZZ with resonant Z decay chains; not the full bb4l background.",
+  "flavour_note": "Massive final-state b and no incoming b, using the same built-in five-flavour PDF as the signal; not a precision matched four-flavour calculation.",
+  "generation_cuts": "No final-state momentum/angle cuts; cut_decays=False; Z resonance window bwcutoff=15.",
+  "z_total_width_GeV": 2.441756,
+  "normalisation_note": "The LHE cross section already includes all specified decays. Do not multiply by branching fractions again.",
+  "generator_commit": "3ea6e242a6021cc909c1016dd1a4f0ab1c398ac7",
+  "cards": [
+    "cards/generate_pp_bbzz_2e2mu.mg5",
+    "cards/run_pp_bbzz_2e2mu.mg5"
+  ],
+  "analysis_selections": {
+    "baseline": {
+      "min_lepton_pt_GeV": 0,
+      "min_b_pt_GeV": 0,
+      "mbb_window_GeV": null,
+      "m4l_window_GeV": null
+    },
+    "pt": {
+      "min_lepton_pt_GeV": 10,
+      "min_b_pt_GeV": 25,
+      "mbb_window_GeV": null,
+      "m4l_window_GeV": null
+    },
+    "windows": {
+      "min_lepton_pt_GeV": 10,
+      "min_b_pt_GeV": 25,
+      "mbb_window_GeV": [
+        105,
+        145
+      ],
+      "m4l_window_GeV": [
+        350,
+        450
+      ]
+    }
+  }
+}

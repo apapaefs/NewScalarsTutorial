@@ -1,0 +1,10 @@
+# Optional Standard Model background: tree-level QCD b bbar ZZ with both Z decays.
+# Run from NewScalarsTutorial. Keep bottom quarks massive and out of the proton.
+set auto_update 0 --no_save
+set automatic_html_opening False --no_save
+set run_mode 0 --no_save
+import model sm
+define p = g u c d s u~ c~ d~ s~
+generate p p > b b~ z z QCD=2 QED=2, z > e+ e-, z > mu+ mu-
+output Work/pp_bbzz_2e2mu
+quit

@@ -1,0 +1,10 @@
+# New production process for the Higgs-decay exercise.
+set auto_update 0 --no_save
+set automatic_html_opening False --no_save
+set run_mode 0 --no_save
+set ninja None --no_save
+set collier None --no_save
+import model loop_sm_scalar
+generate g g > h eta0 [noborn=QCD]
+output Work/gg_h_eta0_bb2e2mu
+quit
