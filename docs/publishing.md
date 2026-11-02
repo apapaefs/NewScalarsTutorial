@@ -14,17 +14,22 @@ From the tutorial repository root, review and commit the source:
 
 ```bash
 git status --short
-git add README.md .gitignore requirements.txt Model cards docs examples lheanalyzer scripts tests
+git lfs install --local
+git add README.md .gitignore .gitattributes requirements*.txt Model cards docs examples samples herwig lheanalyzer jetanalyzer scripts tests
+git lfs ls-files
 git diff --cached --stat
 git diff --cached --check
 git commit -m "Update the scalar-production tutorial"
 ```
 
-`Work/`, `results/`, virtual environments and generated event files are ignored.
-The small LHE file under `tests/fixtures/` is synthetic test data. The 100-event
-file under `examples/` is a real tutorial pilot. These two small samples are
-intended to be tracked. The old MadGraph installation archive is not part of
-this repo.
+`Work/`, `results/` and virtual environments are ignored. Synthetic LHE fixtures
+and the small real pilots in `examples/` are ordinary Git files. The four larger
+classroom LHE files under `samples/` use **Git LFS**; their checksums and provenance
+are in `samples/manifest.json`. Run `python scripts/verify_samples.py` before
+publishing them. The LFS pre-push hook uploads the data when the commit is pushed.
+Validate a fresh clone with `git lfs pull` and the verifier before announcing
+an update. See the [sample instructions](../samples/README.md) for details.
+Generated shower ROOT files and the MadGraph installation are not published.
 
 With write access to this repository, push the reviewed commit from `main`:
 

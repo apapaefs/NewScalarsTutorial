@@ -630,6 +630,15 @@ bottom-pair mass and transverse momentum, try your own observable, and apply
 simple selections. An optional Standard Model background sample lets you compare
 shapes, rates and the effect of mass windows using the same analysis code.
 
+## Next exercise: from quarks to jets
+
+Continue with [the Herwig and HwSim jet lesson](docs/jets.md): four exercises
+for about two hours, using a prepared Herwig installation. You will shower the
+LHE events yourself, reconstruct the Higgs mass from two truth b-jets, count jets
+and b-jets, add HT, and compare signal with background. The new
+[larger samples](samples/README.md) contain 10,000 events for each of the three
+signal stages and 50,000 background events, distributed through Git LFS.
+
 ## Reference material
 
 The manual steps above are the student exercise. The files in `cards/` and
@@ -642,4 +651,5 @@ The model and original tutorial come from
 
 Software installations, generated processes, event samples made during the
 exercise, and plots belong in `Work/` or `results/`; these directories are
-excluded from Git. The small provided example is kept separately in `examples/`.
+excluded from Git. The small provided examples are kept in `examples/`; the larger
+classroom samples in `samples/` use Git LFS.

@@ -1,0 +1,75 @@
+# Common setup for docs/jets.md; read by scripts/prepare_herwig.py output.
+# Herwig 7.3 angular-ordered shower, cluster hadronization, hadron decays and MPI.
+library LesHouches.so
+create ThePEG::LesHouchesEventHandler /Herwig/EventHandlers/TutorialLHE
+create ThePEG::LesHouchesFileReader /Herwig/EventHandlers/TutorialReader
+create ThePEG::Cuts /Herwig/Cuts/TutorialNoCuts
+
+cd /Herwig/EventHandlers
+insert TutorialLHE:LesHouchesReaders 0 TutorialReader
+set TutorialLHE:PartonExtractor /Herwig/Partons/PPExtractor
+set TutorialLHE:CascadeHandler /Herwig/Shower/ShowerHandler
+set TutorialLHE:HadronizationHandler /Herwig/Hadronization/ClusterHadHandler
+set TutorialLHE:DecayHandler /Herwig/Decays/DecayHandler
+set TutorialLHE:WeightOption VarNegWeight
+set TutorialLHE:Cuts /Herwig/Cuts/TutorialNoCuts
+set TutorialReader:Cuts /Herwig/Cuts/TutorialNoCuts
+set TutorialReader:AllowedToReOpen No
+set TutorialReader:InitPDFs No
+set TutorialReader:ReweightPDF No
+set TutorialReader:MomentumTreatment RescaleEnergy
+set TutorialReader:PDFA /Herwig/Partons/HardLOPDF
+set TutorialReader:PDFB /Herwig/Partons/HardLOPDF
+
+# Keep the Herwig 7.3 tune PDFs (CT14lo); do not reweight the MadGraph hard rate.
+set /Herwig/Partons/HardLOPDF:PDFName CT14lo
+set /Herwig/Partons/ShowerLOPDF:PDFName CT14lo
+set /Herwig/Partons/MPIPDF:PDFName CT14lo
+set /Herwig/Partons/RemnantPDF:PDFName CT14lo
+set /Herwig/Shower/ShowerHandler:MaxPtIsMuF Yes
+set /Herwig/Shower/ShowerHandler:RestrictPhasespace Yes
+set /Herwig/Shower/ShowerHandler:SpinCorrelations No
+
+# eta0 appears as an intermediate colour-singlet scalar in the signal LHE.
+# Its decay products are already in that file; no new decay channel is added.
+create ThePEG::ParticleData /Herwig/Particles/eta0
+setup /Herwig/Particles/eta0 99925 eta0 400.0 1.864508 0.0 0.0 0 0 0 1
+set /Herwig/Particles/h0:NominalMass 125.0
+
+library HwSim.so
+create Herwig::HwSim /Herwig/Analysis/TutorialHwSim
+insert /Herwig/Generators/EventGenerator:AnalysisHandlers 0 /Herwig/Analysis/TutorialHwSim
+cd /Herwig/Analysis
+set TutorialHwSim:OnTheFlyAnalysis No
+set TutorialHwSim:SaveObjects No
+set TutorialHwSim:SavePartons No
+set TutorialHwSim:SavePseudoJets No
+set TutorialHwSim:SaveReconstructed Yes
+set TutorialHwSim:BTaggingMethod GhostBHadrons
+set TutorialHwSim:CharmTagging No
+set TutorialHwSim:JetAlgorithm AntiKt
+set TutorialHwSim:RParameter 0.4
+set TutorialHwSim:PTCutParticles 0.0
+set TutorialHwSim:EtaCutParticles 6.0
+set TutorialHwSim:PTCutJets 10.0
+set TutorialHwSim:EtaCutJets 6.0
+# Isolated e/mu are excluded from jets; non-isolated decay leptons can cluster.
+set TutorialHwSim:PTCutElectron 10.0
+set TutorialHwSim:EtaCutElectron 6.0
+set TutorialHwSim:PTCutMuon 10.0
+set TutorialHwSim:EtaCutMuon 6.0
+set TutorialHwSim:ApplyElectronIsolation Yes
+set TutorialHwSim:ApplyMuonIsolation Yes
+set TutorialHwSim:ElectronIsoR 0.2
+set TutorialHwSim:MuonIsoR 0.2
+set TutorialHwSim:ElectronIsoFrac 0.1
+set TutorialHwSim:MuonIsoFrac 0.1
+# Keep photons in the jet inputs; neutrinos are excluded by HwSim.
+set TutorialHwSim:PTCutPhoton 100000.0
+set TutorialHwSim:EtaCutPhoton 6.0
+
+cd /Herwig/Generators
+set EventGenerator:EventHandler /Herwig/EventHandlers/TutorialLHE
+set EventGenerator:DebugLevel 0
+set EventGenerator:PrintEvent 0
+set EventGenerator:MaxErrors 100

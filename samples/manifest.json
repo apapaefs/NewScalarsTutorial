@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "generation_date": "2026-11-02",
+  "generator": "MadGraph5_aMC@NLO 3.5.16",
+  "generator_commit": "3ea6e242a6021cc909c1016dd1a4f0ab1c398ac7",
+  "beam_energy_GeV": [
+    6500,
+    6500
+  ],
+  "hard_pdf": "nn23lo1",
+  "scale": "HT/2 (dynamical_scale_choice=3)",
+  "showered": false,
+  "normalization_note": "Use each final LHE cross section directly; specified decay factors are already included. LHE errors exclude separate decay-integration errors.",
+  "width_approximation": "Same frozen cards as the pilot lessons. Open two-body UFO channels; h gamma gamma is an effective vertex. No off-shell WW/ZZ Higgs decays, loop h gg, running bottom Yukawa or higher-order corrections.",
+  "samples": [
+    {
+      "events": 10000,
+      "unique_events": 10000,
+      "cross_section_pb": 0.000296242,
+      "cross_section_error_pb": 7.891628e-07,
+      "sum_weights": 0.000296242,
+      "negative_weight_events": 0,
+      "max_four_momentum_residual_GeV": 1.400003384333104e-07,
+      "max_mass_errors_GeV": {
+        "h": 1.4037936892918879e-06,
+        "eta0": 7.821549843356479e-07
+      },
+      "sha256": "a4fa5acb138d38a8fc03dea5d5b456af4ee863369d1b790c5b124f657ff2b9fe",
+      "size_bytes": 919975,
+      "file": "gg_h_eta0_10000.lhe.gz",
+      "production_seed": 112345,
+      "madspin_seed": null,
+      "production_run": "students_10000_mc2",
+      "outgoing_pdgs": [
+        25,
+        99925
+      ],
+      "mass_targets": {
+        "h": [
+          [
+            25
+          ],
+          125.0
+        ],
+        "eta0": [
+          [
+            99925
+          ],
+          400.0
+        ]
+      },
+      "process": "g g > h eta0 [noborn=QCD]",
+      "cards": {
+        "run": "cards/large_samples/generated/gg_h_eta0_run.dat",
+        "parameters": "cards/large_samples/generated/gg_h_eta0_parameters.dat",
+        "process": "cards/large_samples/generated/gg_h_eta0_process.dat"
+      },
+      "widths_GeV": {
+        "6": 0.0,
+        "23": 2.441404,
+        "25": 0.0,
+        "99925": 0.0
+      }
+    },
+    {
+      "events": 10000,
+      "unique_events": 10000,
+      "cross_section_pb": 1.1155781e-07,
+      "cross_section_error_pb": 1.6305229e-10,
+      "sum_weights": 1.1155781e-07,
+      "negative_weight_events": 0,
+      "max_four_momentum_residual_GeV": 3.6829997043241747e-06,
+      "max_mass_errors_GeV": {
+        "h": 1.4803372465621578e-06,
+        "four_leptons": 6.360956490425451e-07
+      },
+      "sha256": "912856f66eaa7da0df39f8918774c79fb2cb87c0b738ead670aad8dbd190ef3d",
+      "size_bytes": 3045107,
+      "file": "gg_h_eta0_2e2mu_10000.lhe.gz",
+      "production_seed": 123456,
+      "madspin_seed": 134567,
+      "production_run": "students_10000_mc2",
+      "outgoing_pdgs": [
+        -13,
+        -11,
+        11,
+        13,
+        25
+      ],
+      "mass_targets": {
+        "h": [
+          [
+            25
+          ],
+          125.0
+        ],
+        "four_leptons": [
+          [
+            -13,
+            -11,
+            11,
+            13
+          ],
+          400.0
+        ]
+      },
+      "process": "g g > h eta0 [noborn=QCD]",
+      "cards": {
+        "run": "cards/large_samples/generated/gg_h_eta0_2e2mu_run.dat",
+        "parameters": "cards/large_samples/generated/gg_h_eta0_2e2mu_parameters.dat",
+        "process": "cards/large_samples/generated/gg_h_eta0_2e2mu_process.dat",
+        "decay_99925": "cards/large_samples/generated/gg_h_eta0_2e2mu_decay_99925_run.dat"
+      },
+      "widths_GeV": {
+        "6": 0.0,
+        "23": 2.441756,
+        "25": 0.0,
+        "99925": 1.864508
+      },
+      "production_cross_section_pb": 0.000298431,
+      "production_integration_error_pb": 4.361851e-07,
+      "spinmode": "none",
+      "decay_subruns": {
+        "99925": {
+          "seed": 436632835,
+          "partial_width_GeV": 0.00069698,
+          "branching_factor": 0.000373814432547353
+        }
+      },
+      "decay_factor": 0.000373814432547353,
+      "factorized_onshell_eta0_to_2e2mu_probability": 0.00039098549923638297
+    },
+    {
+      "events": 10000,
+      "unique_events": 10000,
+      "cross_section_pb": 1.0628676e-07,
+      "cross_section_error_pb": 2.098788e-10,
+      "sum_weights": 1.0628676e-07,
+      "negative_weight_events": 0,
+      "max_four_momentum_residual_GeV": 2.9658999665116426e-05,
+      "max_mass_errors_GeV": {
+        "bb": 1.4386251478981649e-06,
+        "four_leptons": 6.33592719623266e-07
+      },
+      "sha256": "475d36b9b0ffaae64fee34a54a9ae45876e12b69ddf6fd1f934c9f2ab173ba8e",
+      "size_bytes": 3736864,
+      "file": "gg_h_eta0_bb2e2mu_10000.lhe.gz",
+      "production_seed": 167890,
+      "madspin_seed": 145678,
+      "production_run": "students_10000_mc2",
+      "outgoing_pdgs": [
+        -13,
+        -11,
+        -5,
+        5,
+        11,
+        13
+      ],
+      "mass_targets": {
+        "bb": [
+          [
+            -5,
+            5
+          ],
+          125.0
+        ],
+        "four_leptons": [
+          [
+            -13,
+            -11,
+            11,
+            13
+          ],
+          400.0
+        ]
+      },
+      "process": "g g > h eta0 [noborn=QCD]",
+      "cards": {
+        "run": "cards/large_samples/generated/gg_h_eta0_bb2e2mu_run.dat",
+        "parameters": "cards/large_samples/generated/gg_h_eta0_bb2e2mu_parameters.dat",
+        "process": "cards/large_samples/generated/gg_h_eta0_bb2e2mu_process.dat",
+        "decay_25": "cards/large_samples/generated/gg_h_eta0_bb2e2mu_decay_25_run.dat",
+        "decay_99925": "cards/large_samples/generated/gg_h_eta0_bb2e2mu_decay_99925_run.dat"
+      },
+      "widths_GeV": {
+        "6": 0.0,
+        "23": 2.441756,
+        "25": 0.005433204,
+        "99925": 1.864508
+      },
+      "production_cross_section_pb": 0.000298541,
+      "production_integration_error_pb": 5.89513e-07,
+      "spinmode": "none",
+      "decay_subruns": {
+        "25": {
+          "seed": 401477660,
+          "partial_width_GeV": 0.0051751,
+          "branching_factor": 0.9524950655267133
+        },
+        "99925": {
+          "seed": 401477661,
+          "partial_width_GeV": 0.00069691,
+          "branching_factor": 0.0003737768891310737
+        }
+      },
+      "decay_factor": 0.0003560206425052731,
+      "factorized_onshell_eta0_to_2e2mu_probability": 0.00039098549923638297
+    },
+    {
+      "events": 50000,
+      "unique_events": 50000,
+      "cross_section_pb": 0.000436931,
+      "cross_section_error_pb": 5.424105e-07,
+      "sum_weights": 0.00043693097999999997,
+      "negative_weight_events": 0,
+      "max_four_momentum_residual_GeV": 1.4600004760723095e-07,
+      "max_mass_errors_GeV": {},
+      "sha256": "b52e05cbe7d3c5846be37f3212d9106a300748932e2ded873f041cc2ab431152",
+      "size_bytes": 15955394,
+      "file": "pp_bbzz_2e2mu_50000.lhe.gz",
+      "production_seed": 156789,
+      "madspin_seed": null,
+      "production_run": "students_50000",
+      "outgoing_pdgs": [
+        -13,
+        -11,
+        -5,
+        5,
+        11,
+        13
+      ],
+      "mass_targets": {},
+      "process": "p p > b b~ z z QCD=2 QED=2, z > e+ e-, z > mu+ mu-",
+      "cards": {
+        "run": "cards/large_samples/generated/pp_bbzz_2e2mu_run.dat",
+        "parameters": "cards/large_samples/generated/pp_bbzz_2e2mu_parameters.dat",
+        "process": "cards/large_samples/generated/pp_bbzz_2e2mu_process.dat"
+      },
+      "widths_GeV": {
+        "6": 0.0,
+        "23": 2.441756,
+        "25": 0.006382339
+      }
+    }
+  ]
+}

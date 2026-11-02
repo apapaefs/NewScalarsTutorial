@@ -15,6 +15,7 @@ __pycache__/
 !examples/gg_h_eta0_2e2mu_pilot.lhe.gz
 !examples/gg_h_eta0_bb2e2mu_pilot.lhe.gz
 !examples/pp_bbzz_2e2mu_pilot.lhe.gz
+!samples/*.lhe.gz
 MG5_debug
 /additional_command
 /py.py

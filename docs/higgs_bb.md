@@ -368,3 +368,6 @@ explicit `--overwrite` if you intend to replace it.
 The supplied samples let you finish everything above without running MadGraph.
 [Optional generation instructions](higgs_bb_generation.md) are provided for
 work with your instructor.
+
+Next, follow [the Herwig and HwSim jet lesson](jets.md) to shower these events,
+reconstruct the Higgs from b-jets and study jet multiplicities.

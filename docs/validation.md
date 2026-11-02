@@ -196,6 +196,7 @@ study was performed. The sample and checks are for the teaching benchmark.
 ## Reproduce the analysis checks
 
 ```bash
+python -m pip install -r requirements-jets.txt
 python -m unittest discover -s tests -v
 python lheanalyzer/lhe_analyzer.py examples/gg_h_eta0_pilot.lhe.gz check
 python lheanalyzer/lhe_analyzer.py examples/gg_h_eta0_pilot.lhe.gz check_pt100 --min-pt-h 100
@@ -348,3 +349,53 @@ background model, interference calculation, detector resolution, b-tagging
 model or discovery sensitivity was evaluated. The Higgs branching approximation
 and the background's limited process content are stated in
 [the generation guide](higgs_bb_generation.md).
+
+## Herwig and HwSim jet lesson
+
+On 2 November 2026, the following checks completed for [the jet lesson](jets.md):
+
+- Generated three independent 10,000-event signal samples and a 50,000-event
+  background with MadGraph 3.5.16. The original pilots and model archives are
+  unchanged. `scripts/verify_samples.py` checked all 80,000 outgoing topologies,
+  unique final-state momenta, positive equal weights, weight sums, four-momentum
+  conservation, appropriate reconstructed scalar masses and SHA-256 checksums.
+  The largest LHE four-momentum residual is below `5e-5 GeV`; all target mass
+  errors are below `1e-4 GeV`. Actual maxima are in the sample manifest.
+- Checked both final/production decay factors against the integrated decay
+  partial widths divided by the frozen total widths. The eta0 factors agree
+  within 5% with `B(eta0 -> ZZ) * 2 * B(Z -> ee) * B(Z -> mumu)`; the Z windows
+  and finite-width phase space account for differences from factorised on-shell
+  branching ratios. Both e/mu assignments are included.
+- Ran Herwig 7.3.0/ThePEG 2.3.0 with FastJet 3.5.1, ROOT 6.40.04 and HwSim commit
+  `51ba33aea55ddbee0df8309d425b6fbdde1ceee3`. Initial 30-event signal and 100-event
+  background smoke runs were followed by 1,000-event runs for each larger input,
+  and 1,000 signal events with R = 0.6. All completed with the requested ROOT
+  entry count, unit nominal weights and 1,000 hard-event attempts. The hard
+  cross sections agree with the LHE values to the precision printed by Herwig.
+  The maximum Herwig consistency residual in these 1,000-event runs was
+  `0.468 MeV`. Shower ROOT products remain local; students generate their own.
+- Executed all **12 marked student commands** and both exact HT additions in
+  order in a disposable tutorial copy, including new Herwig signal/background
+  runs. The starter produced three observables, the completed exercise four;
+  every plot was written as PDF and PNG. Shape/rate overlays, CSVs and JSON
+  reports were produced. The activation sequence was checked with both Herwig
+  and the tutorial Python interpreter available.
+- With seeds 22001/22002, R = 0.4, pT >= 25 GeV and |eta| < 2.5, exactly two
+  accepted b-jets occurred in **622/1000 signal** and **86/1000 background**
+  events. Raising the signal jet threshold to 40 GeV gave **384/1000**.
+  The R = 0.6 signal check gave **666/1000** at 25 GeV. These are checks of this
+  software/setup/seed combination, not universal efficiencies.
+- All **40 Python tests** passed locally with Python 3.12.14, NumPy 2.5.3,
+  Matplotlib 3.11.2 and Uproot 5.7.7. Nine new tests cover the separate jet
+  collections, pair selection, acceptance cuts, ROOT padding and invalid data,
+  signed weights, flow-bin integrals, empty selections, CLI/run-count checks,
+  comparison consistency, the HT additions, and sample/LFS metadata. Python
+  3.9.6 syntax compilation also passed; its full runtime suite was not run locally.
+- Visually inspected the signal mass plot, signal/background mass and both
+  multiplicity overlays, and the HT rate overlay for readable labels, binning,
+  error bars and the broadened Higgs peak.
+
+The larger hard samples do not add perturbative orders or a complete background
+calculation. This validation does not include detector simulation, experimental
+b-tagging, pileup, a fresh Herwig installation on another platform or full-sample
+showering of all 80,000 hard events.

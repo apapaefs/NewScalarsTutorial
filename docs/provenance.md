@@ -49,3 +49,11 @@ using the calculation in scientific work.
 The source snapshots of NewScalars and lheanalyzer contain no explicit project
 licence. This repository preserves attribution and does not assign a replacement
 licence to those sources. A licence for new material can be added by its owner.
+
+The jet lesson uses [HwSim](https://gitlab.com/apapaefs/hwsim) at commit
+`51ba33aea55ddbee0df8309d425b6fbdde1ceee3`. Its `Contrib/hwsim/Analysis/`
+examples and `HwSim.cc` define the ROOT array layout and ghost b-hadron tagging.
+The tutorial adds a Python reader/analysis using that documented storage layout;
+the plugin and Herwig installation remain external dependencies. The Herwig LHE
+card follows the installed 7.3.0 `LHE.in` and HwSim examples. Installation details,
+object definitions and limitations are in [the setup notes](jets_setup.md).
