@@ -4,6 +4,20 @@ The [student jet lesson](jets.md) assumes the software is already installed.
 Its four exercises use pre-generated hard events, so compilation is not part
 of the two-hour session.
 
+## Course installation on Timur
+
+Use the prepared Herwig installation on **Timur**. In each new terminal, run:
+
+```bash
+module load herwig
+Herwig --version
+```
+
+Then follow the student lesson to select the tutorial's Python interpreter
+and install its Python dependencies. The HwSim requirements below also apply
+to the course installation. The recorded end-to-end checks used the local
+setup described below; the Timur module was not tested from this workspace.
+
 ## Tested software and plugin
 
 The local end-to-end setup uses Herwig **7.3.0**, ThePEG **2.3.0**, FastJet
@@ -14,9 +28,21 @@ The local end-to-end setup uses Herwig **7.3.0**, ThePEG **2.3.0**, FastJet
 `theJets`, `thebJets`, `numJets` and `numbJets`. Our Python analyser follows
 that storage layout and uses the shared tutorial mass/plotting helpers.
 
+## Optional installation on another machine
+
 Install Herwig using its [official installation instructions](https://herwig.hepforge.org/downloads.html)
 with ROOT, FastJet and LHAPDF available. The **CT14lo** PDF set is needed for
-this setup. With the Herwig environment active, check:
+this setup. Replace the path below with your installation path and activate
+Herwig before selecting the tutorial's Python interpreter:
+
+```bash
+source /path/to/Herwig/bin/activate
+export PATH="$PWD/.venv/bin:$PATH"
+```
+
+Run these from the tutorial directory. The `PATH` line avoids sourcing two
+activation scripts, which can undo the first activation. With this environment,
+check:
 
 ```bash
 Herwig --version

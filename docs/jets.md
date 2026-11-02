@@ -11,22 +11,22 @@ All commands below go in a **terminal**, from the `NewScalarsTutorial` directory
 
 ## Before the session
 
-Ask your instructor for a working **Herwig 7.3 + FastJet + ROOT + HwSim**
-installation. Building these packages is outside the two-hour exercise.
-The [setup notes](jets_setup.md) give the tested versions and installation checks.
-Activate Herwig, then select the tutorial's Python interpreter:
+On **Timur**, use the prepared Herwig installation. Load it in each new
+terminal, then select the tutorial's Python interpreter:
 
 ```bash
-source /path/to/Herwig/bin/activate
+module load herwig
 export PATH="$PWD/.venv/bin:$PATH"
 python -m pip install -r requirements-jets.txt
 Herwig --version
 ```
 
-Replace `/path/to/Herwig` with the installation path supplied by your instructor.
-The `PATH` line makes `python` use your existing `.venv` while keeping Herwig
-available; sourcing both activation scripts can undo the first activation.
+The `module load herwig` command makes Timur's Herwig installation available
+in your current terminal. The `PATH` line makes `python` use your existing
+`.venv` while keeping Herwig available.
 Python reads the ROOT file through Uproot; you do not need to learn ROOT or C++.
+The [instructor setup notes](jets_setup.md) cover the HwSim requirements and
+installation on other machines.
 
 The larger samples use [Git LFS](https://git-lfs.com/). Install Git LFS before
 downloading them, then run:

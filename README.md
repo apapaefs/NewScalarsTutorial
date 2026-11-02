@@ -633,10 +633,11 @@ shapes, rates and the effect of mass windows using the same analysis code.
 ## Next exercise: from quarks to jets
 
 Continue with [the Herwig and HwSim jet lesson](docs/jets.md): four exercises
-for about two hours, using a prepared Herwig installation. You will shower the
-LHE events yourself, compare the Higgs mass from bottom quarks with its mass
-from two truth b-jets, count jets and b-jets, add HT, and compare signal with
-background. The new [larger samples](samples/README.md) contain 10,000 events
+for about two hours, using the Herwig installation on **Timur**, loaded with
+`module load herwig`. You will shower the LHE events yourself, compare the
+Higgs mass from bottom quarks with its mass from two truth b-jets, count jets
+and b-jets, add HT, and compare signal with background. The new
+[larger samples](samples/README.md) contain 10,000 events
 for each of the three signal stages and 50,000 background events, distributed
 through Git LFS.
 
