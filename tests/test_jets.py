@@ -1,11 +1,13 @@
 """HwSim storage, jet selection, normalisation and student-code checks."""
 
 import hashlib
+from dataclasses import replace
 import json
 import math
 from pathlib import Path
 import re
 import shutil
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -16,7 +18,9 @@ import numpy as np
 import uproot
 
 from jetanalyzer import hwsim_jets as jets
+from jetanalyzer import compare_mbb_levels as levels
 from jetanalyzer.compare_jets import compare
+from lheanalyzer.lhe_tools import read_lhe
 from scripts.prepare_herwig import prepare
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -227,6 +231,137 @@ class JetTests(unittest.TestCase):
                 eta_br = sample['decay_subruns']['99925']['branching_factor']
                 expected = sample['factorized_onshell_eta0_to_2e2mu_probability']
                 self.assertLess(abs(eta_br / expected - 1), .15)
+
+
+class MassLevelTests(unittest.TestCase):
+    fixture = ROOT / 'tests/fixtures/gg_h_eta0_bb2e2mu_toy.lhe'
+
+    def inputs(self, directory, events=None):
+        path = Path(directory) / 'input.root'
+        if events is None:
+            events = [jets.JetEvent(EMPTY, EMPTY, 1.), jets.JetEvent(EMPTY, PAIR, 2.),
+                      jets.JetEvent(EMPTY, PAIR*8, -.5)]
+        write_root(path, events)
+        info = write_run_files(path, len(events))
+        info.update(lhe_sha256=hashlib.sha256(self.fixture.read_bytes()).hexdigest(), lhe_events=3)
+        path.with_suffix('.json').write_text(json.dumps(info))
+        return path
+
+    def test_parton_four_vector_sum_status_and_acceptance(self):
+        sample = read_lhe(self.fixture)
+        event = sample.events[0]
+        b = next(p for p in event if p.pdg == 5)._replace(px=30., py=0., pz=40., energy=50.)
+        bbar = next(p for p in event if p.pdg == -5)._replace(px=-30., py=0., pz=0., energy=40.)
+        # Intermediate b records and scalar masses must not enter the sum.
+        event = [p for p in event if abs(p.pdg) != 5] + [b, bbar, b._replace(status=2, energy=500.)]
+        sample = replace(sample, events=[event], weights=[2.])
+        masses, weights = levels.parton_masses(sample, min_pt=30.)
+        self.assertAlmostEqual(masses[0], math.sqrt(90.**2 - 40.**2))
+        self.assertEqual(weights, [2.])  # A 5 GeV lepton does not impose another cut.
+        self.assertEqual(levels.parton_masses(sample, min_pt=30.001), ([], []))
+        self.assertEqual(levels.parton_masses(sample, max_eta=math.asinh(40./30.)), ([], []))
+        self.assertEqual(levels.parton_masses(sample, max_eta=1.1)[1], [2.])
+
+    def test_incompatible_lhe_topologies(self):
+        sample = read_lhe(self.fixture)
+        event = sample.events[0]
+        b = next(p for p in event if p.pdg == 5)
+        invalid = [
+            [p for p in event if p.pdg != 5],
+            event + [b],
+            [p._replace(pdg=5) if p.pdg == -5 else p for p in event],
+            [p._replace(status=2) if p.pdg == 5 else p for p in event],
+            event + [b._replace(pdg=21)],
+        ]
+        for bad in invalid:
+            with self.subTest(pdg=[(p.pdg, p.status) for p in bad]):
+                with self.assertRaisesRegex(ValueError, 'fully decayed'):
+                    levels.parton_masses(replace(sample, events=[bad], weights=[1.]))
+        with self.assertRaisesRegex(ValueError, 'nominal weight'):
+            levels.parton_masses(replace(sample, weights=[]))
+
+    def test_separate_rate_normalizations_signed_weights_and_flow(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.inputs(directory)
+            for normalization in ('shape', 'cross-section'):
+                destination = Path(directory) / normalization
+                report = levels.compare(self.fixture, root, destination, normalization)
+                for level, rate in (('parton', 8.), ('hadron', 1.2)):
+                    row = report['levels'][level]
+                    flow = row['histogram']
+                    integral = sum(flow[key] for key in ('in_range_integral', 'underflow_integral',
+                                                        'overflow_integral'))
+                    self.assertAlmostEqual(integral, 1. if normalization == 'shape' else rate)
+                    self.assertAlmostEqual(row['selected_cross_section_pb'], rate)
+                self.assertEqual(report['levels']['hadron']['histogram']['overflow_entries'], 1)
+                self.assertAlmostEqual(report['levels']['hadron']['weighted_efficiency'], .6)
+                self.assertEqual(report['levels']['hadron']['selected_sumw2'], 4.25)
+                self.assertEqual(report['levels']['parton']['selected_events'], 3)
+                self.assertEqual(report['levels']['hadron']['selected_events'], 2)
+                # The parton peak and its nominal +/- rounding lie in one bin.
+                bins = levels.MASS_BINS
+                self.assertEqual((bins[12] + bins[13])/2, 125.)
+                self.assertEqual(np.searchsorted(bins, [124.99999, 125.00001]).tolist(), [13, 13])
+                for filename in ('m_bb_levels.pdf', 'm_bb_levels.png', 'histograms.csv',
+                                 'selection_table.csv', 'comparison.json'):
+                    self.assertGreater((destination / filename).stat().st_size, 0)
+
+    def test_empty_selection_and_nonpositive_selected_weight(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.inputs(directory, [jets.JetEvent(EMPTY, EMPTY, 2.),
+                                           jets.JetEvent(EMPTY, PAIR, -.5)])
+            with self.assertRaisesRegex(ValueError, 'positive selected weight'):
+                levels.compare(self.fixture, root, Path(directory) / 'bad_shape')
+            rate = levels.compare(self.fixture, root, Path(directory) / 'rate', 'cross-section')
+            self.assertAlmostEqual(rate['levels']['hadron']['selected_cross_section_pb'], -2./3.)
+            for normalization in ('shape', 'cross-section'):
+                report = levels.compare(self.fixture, root, Path(directory) / normalization,
+                                        normalization, min_pt=10000)
+                for row in report['levels'].values():
+                    self.assertEqual(row['selected_events'], 0)
+                    self.assertEqual(row['selected_cross_section_pb'], 0)
+                    self.assertEqual(row['histogram']['in_range_integral'], 0)
+
+    def test_source_identity_run_counts_and_cut_limits(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.inputs(directory)
+            info = json.loads(root.with_suffix('.json').read_text())
+            for key, value, message in [('lhe_sha256', 'different', 'checksum differs'),
+                                        ('lhe_events', 2, 'LHE event count'),
+                                        ('requested_events', 4, 'Incomplete/mismatched'),
+                                        ('b_tag', 'Other', 'truth-tagging setup')]:
+                root.with_suffix('.json').write_text(json.dumps(dict(info, **{key: value})))
+                with self.assertRaisesRegex(ValueError, message):
+                    levels.compare(self.fixture, root, Path(directory) / 'unused')
+            root.with_suffix('.json').write_text(json.dumps(info))
+            pointer = Path(directory) / 'pointer.lhe.gz'
+            pointer.write_text('version https://git-lfs.github.com/spec/v1\noid sha256:dummy\n')
+            with self.assertRaisesRegex(ValueError, 'git lfs pull'):
+                levels.compare(pointer, root, Path(directory) / 'unused')
+            for pt, eta in ((9., 2.5), (math.nan, 2.5), (25., 0), (25., 7.)):
+                with self.assertRaisesRegex(ValueError, 'storage range'):
+                    levels.compare(self.fixture, root, Path(directory) / 'unused', min_pt=pt, max_eta=eta)
+
+    def test_guide_commands_and_cli_overwrite(self):
+        guide = (ROOT / 'docs/jets.md').read_text()
+        commands = re.findall(r'<!-- student-command: (mbb_levels|mbb_level_rates) -->\n```bash\n(.*?)\n```',
+                              guide, re.S)
+        self.assertEqual(len(commands), 2)
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.inputs(directory)
+            for _, command in commands:
+                args = shlex.split(command)
+                args[:4] = [sys.executable, str(ROOT / args[1]), str(self.fixture), str(root)]
+                args += ['--output-dir', directory]
+                result = subprocess.run(args, capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertIn('3/3 selected', result.stdout)
+                self.assertIn('2/3 selected', result.stdout)
+                repeated = subprocess.run(args, capture_output=True, text=True)
+                self.assertNotEqual(repeated.returncode, 0)
+                self.assertIn('Results already exist', repeated.stderr)
+            result = subprocess.run(args + ['--overwrite'], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
 
 
 if __name__ == '__main__':

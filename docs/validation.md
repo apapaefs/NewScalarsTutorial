@@ -399,3 +399,34 @@ The larger hard samples do not add perturbative orders or a complete background
 calculation. This validation does not include detector simulation, experimental
 b-tagging, pileup, a fresh Herwig installation on another platform or full-sample
 showering of all 80,000 hard events.
+
+### Parton and hadron mass comparison
+
+Also on 2 November 2026, the new comparison in exercise 2 was checked using
+the 10,000-event fully decayed signal LHE and the completed 1,000-event Herwig
+signal run above (seed 22001, R = 0.4):
+
+- Ran both new commands directly from the guide in the disposable tutorial
+  copy. They produced shape and rate overlays in PDF/PNG, histogram CSVs,
+  selection tables and JSON reports. This reused the existing ROOT file;
+  no additional shower run was needed. The original 12 commands were checked
+  in the earlier walkthrough; the guide now has 14 marked commands.
+- With |eta| < 2.5, the 25 GeV threshold selected **7,663/10,000** LHE bottom
+  pairs and **622/1,000** jet pairs. Repeating at 40 GeV gave **5,386/10,000**
+  and **384/1,000**, respectively. These selections are applied separately
+  to the two samples; these counts are not an event-matched migration study.
+- Checked the histogram CSV integrals together with the JSON flow bins.
+  The default shapes integrate to one. At 25 GeV the rate integrals are
+  `8.1447544188e-8 pb` for the partons and `6.6110514e-8 pb` for the jets,
+  matching the selected cross sections within relative tolerance `1e-12`.
+  Three accepted jet pairs lie above the plotted 300 GeV upper edge and
+  contribute to the overflow and normalisation.
+- Visually inspected the shape and rate overlays, including labels, common
+  10 GeV bins, error bars, the single-bin parton peak and broader jet peak.
+- All **46 Python tests** passed locally. Six added tests cover outgoing
+  status filtering, four-vector sums, incompatible final states, acceptance
+  boundaries, separate rate normalisations, signed weights and flow bins,
+  empty selections, source/run consistency, and the guide's comparison
+  commands and overwrite protection. Python 3.9.6 syntax compilation passed
+  for the changed analysis and tests; the local runtime suite used Python
+  3.12.14 and the package versions recorded above.

@@ -125,6 +125,24 @@ integral is the pair efficiency. The separate comparison program instead
 normalises each plotted distribution to unit area, including flow bins.
 Both conventions and the chosen cuts are recorded in the JSON output.
 
+`jetanalyzer/compare_mbb_levels.py` compares the original outgoing LHE b/bbar
+with exactly two accepted truth b-jets. The same pT and pseudorapidity cuts are
+applied at each level, without another lepton cut. Both curves use 10 GeV bins
+centred on 125 GeV, avoiding a bin edge at the fixed parton-level Higgs mass.
+The default shapes each have unit area including flow bins; the rate option
+uses the LHE rate divided by all LHE weight for the partons, and the final
+Herwig rate divided by all ROOT weight for the jets. The selection table gives
+each efficiency relative to its own inclusive sample.
+
+The comparison checks the source LHE checksum against the Herwig run record.
+It uses the entire LHE file and the completed ROOT run, which can have different
+event counts. It does not match individual events, require them to pass both
+selections, or measure a mass response for matched objects. Its error bars are
+sqrt(sum(w^2)) with fixed normalisation divisors, without covariance between
+the levels. An empty selection gives a zero curve. The broader jet mass includes
+the combined effects of showering, hadronization, decays, MPI and reconstruction;
+it does not isolate a hadronization correction or detector mass resolution.
+
 The background remains the earlier massive-b tree-level QCD bbZZ component:
 no incoming b partons, photon/nonresonant four-lepton diagrams, pure electroweak
 component or other backgrounds. Its five-flavour hard PDF with massive final

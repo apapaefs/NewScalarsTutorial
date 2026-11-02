@@ -88,7 +88,7 @@ Explain why there can be more than two jets even though the hard signal has only
 two outgoing quarks. Identify the contributions of radiation and additional
 parton interactions. No detector simulation or pileup has been added.
 
-## 2. Read the b-jet reconstruction and change a cut (25 minutes)
+## 2. Compare partons with jets and change a cut (35 minutes)
 
 Our jets use **anti-kT with radius R = 0.4**. The analysis accepts jets with
 **pT at least 25 GeV and |eta| below 2.5**. Here eta measures how close a jet
@@ -126,6 +126,43 @@ two accepted b-jets has no mass entry. A merged jet containing two b hadrons
 still counts as **one jet**. Extra b-jets can also arise from gluon splitting;
 a truth b label does not guarantee that the jet came from the Higgs.
 
+### Put the parton and hadron levels on one plot
+
+Reuse your Herwig output to compare the two stages:
+
+<!-- student-command: mbb_levels -->
+```bash
+python jetanalyzer/compare_mbb_levels.py samples/gg_h_eta0_bb2e2mu_10000.lhe.gz Work/herwig/signal.root signal_mbb_levels
+```
+
+Open `results/signal_mbb_levels/m_bb_levels.pdf`. The blue curve uses the
+outgoing b and bbar in the **original LHE file**; the orange curve uses the
+two accepted truth b-jets **after Herwig**. Both use pT >= 25 GeV, |eta| < 2.5
+and common 10 GeV mass bins. The parton-level Higgs mass is fixed at 125 GeV,
+at the centre of one bin. Explain why the jet curve spreads out and develops
+a low-mass tail.
+
+Each curve has unit area, including entries outside the plotted range, so this
+first plot compares **shapes**. For rates and selection efficiencies, also run:
+
+<!-- student-command: mbb_level_rates -->
+```bash
+python jetanalyzer/compare_mbb_levels.py samples/gg_h_eta0_bb2e2mu_10000.lhe.gz Work/herwig/signal.root signal_mbb_level_rates --normalization cross-section
+```
+
+Read `selection_table.csv` beside the plot. The same numerical cuts select
+different objects at the two levels. The parton curve uses all 10,000 LHE events;
+the hadron curve uses your 1,000-event shower run. These are separately selected
+distributions, not pairs of matched event records. The program checks that the
+LHE file is the one used for your Herwig run.
+
+Here, **hadron level** includes showering, hadronization, hadron decays and
+multiple parton interactions (MPI). This comparison shows their combined effect
+on reconstruction and selection.
+Radiation outside the jets and neutrinos from hadron decays can lower the
+reconstructed mass; extra particles can add energy. No detector resolution
+has been applied.
+
 Raise the jet threshold without repeating Herwig:
 
 <!-- student-command: harder_jets -->
@@ -134,9 +171,8 @@ python jetanalyzer/hwsim_jets.py Work/herwig/signal.root signal_pt40 --min-jet-p
 ```
 
 Record the two-b-jet efficiencies at 25 and 40 GeV. Explain the change in
-`n_bjets` and `m_bb`. The jet mass peak is broader than the parton-level peak:
-some radiation escapes the jets and neutrinos from hadron decays are invisible
-to the jet finder. This width is **not detector mass resolution**.
+`n_bjets` and `m_bb`. You can repeat the level comparison with `--min-pt 40`
+and a new tag; this changes the cut on both the quarks and the jets.
 
 ## 3. Add an observable: total jet transverse momentum (25 minutes)
 
@@ -225,5 +261,6 @@ for background, with new tags. Keep each `.json` and `.out` beside its `.root`:
 they record the setup and the final Herwig cross section. The generator stops
 at the end of the input file instead of recycling events.
 
-**Hand in:** the three jet plots plus HT, the two efficiencies from exercise 2,
-the signal/background selection table, and a few sentences answering the questions.
+**Hand in:** the three jet plots plus HT, the parton/hadron mass overlay, the two
+efficiencies from exercise 2, the signal/background selection table, and a few
+sentences answering the questions.
